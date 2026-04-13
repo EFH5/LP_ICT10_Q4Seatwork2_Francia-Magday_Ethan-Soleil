@@ -1,36 +1,56 @@
 from js import document
 
-class Phrase:
-    def __init__(self, name, section, desiredJob):
+# Class definition
+class Classmate:
+    def __init__(self, name, section, job):
         self.name = name
         self.section = section
-        self.desiredJob = desiredJob
+        self.job = job
 
     def introduce(self):
-        return f"Hello! I am {self.name} from {self.section}. I want to be a {self.desiredJob} when I grow up."
+        return f"Name: {self.name}<br>Section: {self.section}<br>Desired Job: {self.job}<br><br>"
 
 
-people = [
-    Phrase("Inigo", "Sapphire", "Lawyer"),
-    Phrase("Curt", "Sapphire", "Basketball Coach"),
-    Phrase("Yanna", "Sapphire", "Engineer"),
-    Phrase("Luis", "Sapphire", "IT"),
-    Phrase("Zyan", "Sapphire", "President")
+# Initial list
+classmates = [
+    Classmate("Inigo", "Sapphire", "Lawyer"),
+    Classmate("Curt", "Sapphire", "Basketball Coach"),
+    Classmate("Yanna", "Sapphire", "Engineer"),
+    Classmate("Luis", "Sapphire", "IT"),
+    Classmate("Zyan", "Sapphire", "President")
 ]
 
-def show_list():
+
+# Show list
+def show_list(event=None):
     output = ""
-    for person in people:
-        output += person.introduce() + "<br>"
-    
-    document.getElementById("output").innerHTML = output
+    for classmate in classmates:
+        output += classmate.introduce()
 
-def add():
-    name = document.getElementById("name").value
-    section = document.getElementById("section").value
-    desiredJob = document.getElementById("desiredJob").value
+    document.getElementById("classmate-list").innerHTML = output
 
-    new_person = Phrase(name, section, desiredJob)
-    people.append(new_person)
 
-    show_list()
+# Add classmate
+def add_classmate(event=None):
+    username = document.getElementById("name").value.strip()
+    section = document.getElementById("section").value.strip()
+    desiredJob = document.getElementById("desiredJob").value.strip()
+
+    if not username or not section or not desiredJob:
+        document.getElementById("signed").innerText = "Please fill in all fields!"
+        return
+
+    if any(c.name == username for c in classmates):
+        document.getElementById("signed").innerText = "You're already in the list!"
+        return
+
+    new_classmate = Classmate(username, section, desiredJob)
+    classmates.append(new_classmate)
+
+    document.getElementById("signed").innerText = f"{username} added successfully!"
+
+    # Clear inputs
+    document.getElementById("name").value = ""
+    document.getElementById("section").value = ""
+    document.getElementById("desiredJob").value = ""
+
